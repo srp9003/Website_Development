@@ -22,7 +22,7 @@
     app.post("/submit", (req, res) => {
         const data = req.body;
         const push_data = {Title : data['Title'], Author : data['Author'], Content : data['Content']};
-        blogs_list.push(push_data);  
+        blogs_list.push(push_data); 
         res.redirect("/")    
         });
 
@@ -35,9 +35,8 @@
         for(var i=0; i<blogs_list.length; i++){
             if(blogs_list[i]['Title'] === selected_blog['Title'] && blogs_list[i]['Author'] === selected_blog['Author']){
                 const data = blogs_list[i];
-                console.log(data);
-                res.render("blogs.ejs", {data});
-                console.log("done")
+                const data_set = {Title: data.Title, Author: data.Author, Content: data.Content.split("\r\n")}
+                res.render("blogs.ejs", {data_set});
                 break;
             }
         }
