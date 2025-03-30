@@ -1,0 +1,53 @@
+body{
+    margin: 0;
+    padding: 0;
+    background-color: #e4f9fb;
+}
+
+#row{
+    height: 75%;
+    width: auto;
+}
+
+main{
+    height: 100vh;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#profile{
+    height: 60%;
+    width: 50%;
+    display: grid;
+    grid-template-columns: 70% 30%;
+    grid-template-rows: 75% 25% ;
+    gap: 5px;
+}
+
+#quotes{
+    grid-area: 1/1/3/2;
+    font-family: 'Kalam', sans-serif;
+    text-align: center;
+}
+
+img{
+    grid-area: 1/2/2/3;
+    height: 100%;
+    width: auto;
+}
+
+#name{
+    grid-area: 2/2/3/3;
+    text-align: center;
+}
+
+#Skills{
+    height: 50vh;
+    width: auto;
+}
+
+#Contact{
+    height: 50vh;
+    width: auto;
+}
