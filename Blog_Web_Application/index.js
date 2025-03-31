@@ -10,6 +10,7 @@
     import ejs from "ejs";                          
     import path from "path";
     import { fileURLToPath } from "url";
+import { register } from "module";
 
 
 //Port number where the Server listens to requests
@@ -23,7 +24,8 @@
     
 //Variable initialization for storing Blog data and tracking specific Blogs  
     var blogs_list = [];                            
-    var selected_blog = {};            
+    var selected_blog = {};
+    var login = [];            
     
 //Middleware to server static files from the "public" folder
     app.use(express.static('public'));              
@@ -34,15 +36,51 @@
 
 
 /**
- * Route for the Homepage ("/")
- * Renders the "index.ejs" view with the list of blogs.
+ * Route for the Login/Registration page ("/")
+ * Renders the "login.ejs" view.
  * @param {Object} req - The request object.
  * @param {Object} req - The response object. 
  */
     app.get("/", (req, res) => {
-        res.render("index.ejs",{blogs_list});
+        res.render("login.ejs");
     })
 
+/**
+ * Route for receiving User details and registering them in the temporary database ("/registration")
+ * Redirects to the login page after the registration is done ("/")
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
+    app.post("/registration", (req,res) => {
+        //parse and store the user entered details in register_details
+        const register_details = req.body;
+
+        //push the details in the temporary storage where all the User info is stored.
+        login.push(register_details);
+        res.redirect("/");
+    })
+
+/**
+ * Route to receive the User details and determine if there are existing User details ("/login")
+ * Render the index.ejs file to add new blogs and view existing blogs.
+ * @param {Object} req - The request object.
+ * @param {Object} req - The response object.
+ */
+    app.post("/login", (req, res) => {
+        //paarse the details entered by the User.
+        const login_details = req.body;
+
+        //Determine if same User details exist in the temporary User detail storage
+        const exists = login.find(element => element.Email===login_details.Email && element.Password===login_details.Password)
+        if(exists){
+            //render the index.ejs file to allow the User to add or view current blogs
+            res.render("index.ejs",{blogs_list});
+        }
+        else{
+            //if the entered credentials do not exist in the local storage, redirect the user to Login page ("/").
+            res.redirect("/")
+        }
+    })
 /**
  * Route to handle blog submissions via POST ("/submit")
  * Receives the data from the form and adds a new blog to the blogs_list
